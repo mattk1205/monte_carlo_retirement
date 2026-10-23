@@ -1,6 +1,9 @@
 """Display one year's tax-aware contribution accounting."""
 
 import argparse
+from dataclasses import replace
+from pathlib import Path
+from time import perf_counter
 
 from .accounts import AccountBalances, allocate_contributions
 from .config import load_config
@@ -11,8 +14,75 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", default="configs/baseline.yaml")
     parser.add_argument("--year", type=int, help="Override the configured tax year")
+    parser.add_argument(
+        "--simulate", action="store_true", help="Run all lifecycle phases"
+    )
+    parser.add_argument("--scenarios", type=int, help="Override Monte Carlo path count")
+    parser.add_argument("--output", default="outputs/latest")
+    parser.add_argument(
+        "--no-adaptive", action="store_true", help="Only fixed allocations"
+    )
+    parser.add_argument(
+        "--sensitivity", action="store_true", help="Run paired assumption perturbations"
+    )
+    parser.add_argument(
+        "--profile", action="store_true", help="Save CPU profile and timing"
+    )
     args = parser.parse_args()
     config = load_config(args.config)
+    if args.scenarios is not None:
+        config = replace(config, scenario_count=args.scenarios)
+    if args.no_adaptive:
+        config = replace(
+            config, optimization=replace(config.optimization, enabled=False)
+        )
+    if args.simulate:
+        from .analysis import export_result, sensitivity_analysis
+        from .simulation import simulate
+
+        output = Path(args.output)
+        output.mkdir(parents=True, exist_ok=True)
+        if args.year is not None:
+            config = replace(config, tax_year=args.year)
+        profiler = None
+        if args.profile:
+            import cProfile
+
+            profiler = cProfile.Profile()
+            profiler.enable()
+        start = perf_counter()
+        print(f"Simulating {config.scenario_count:,} shared paths...", flush=True)
+        result = simulate(config)
+        elapsed = perf_counter() - start
+        if profiler:
+            profiler.disable()
+            profiler.dump_stats(str(output / "cpu_profile.prof"))
+            import pstats
+
+            with (output / "profile.txt").open("w") as stream:
+                pstats.Stats(profiler, stream=stream).sort_stats(
+                    "cumulative"
+                ).print_stats(25)
+        summary = export_result(result, output, elapsed_seconds=elapsed)
+        print(
+            summary[
+                [
+                    "strategy",
+                    "median_terminal_real",
+                    "probability_best_tie_split",
+                    "spending_success_probability",
+                ]
+            ].to_string(index=False)
+        )
+        if args.sensitivity:
+            print("Running paired sensitivity experiments...", flush=True)
+            sensitivity_analysis(
+                config, output, scenarios=min(200, config.scenario_count)
+            )
+        print(
+            f"Simulation: {elapsed:.2f}s. Open {(output / 'dashboard.html').resolve()}"
+        )
+        return
     year = config.tax_year if args.year is None else args.year
     policy = load_tax_timeline(config.tax_policy_files).for_year(year)
     if config.retirement_state not in policy.states:

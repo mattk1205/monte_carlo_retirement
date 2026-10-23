@@ -23,3 +23,35 @@ tax_policy_files:
 roth_shares: [0.0, 0.5, 1.0]
 random_seed: 42
 scenario_count: 10000
+
+# Hypothetical distributions, not forecasts or fitted estimates.
+economics:
+  real_income_growth: 0.01
+  income_volatility: 0.10
+  return_mean: 0.065
+  return_volatility: 0.16
+  inflation_mean: 0.025
+  inflation_volatility: 0.01
+  return_inflation_correlation: 0.1
+  savings_income_elasticity: 1.0
+  spending_volatility: 0.08
+  retirement_other_income: 0
+  dividend_yield: 0.015
+  capital_gains_rate: 0.15
+  index_tax_brackets: false
+  index_contribution_limit: true
+  policy_change_age: 55
+  policy_multiplier_volatility: 0.15
+  rmd_start_age: 75
+  valuation_years: 20
+  withdrawal_order: [taxable, traditional, roth]
+  income_events:
+    - {age: 45, multiplier: 1.25, probability: 0.5}
+    - {age: 52, multiplier: 0.7, probability: 0.15}
+optimization:
+  enabled: true
+  planning_scenarios: 8
+  income_groups: 3
+  wealth_groups: 2
+  candidate_roth_shares: [0, 0.5, 1]
+  risk_penalty: 0

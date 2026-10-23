@@ -19,7 +19,8 @@ Tax savings are assumed available in the same year, with no cash-flow delay.
 The one-year demo treats the supplied savings budget as available cash, which
 could include outside funds. It does not validate household living expenses or
 net-pay affordability. It adds contributions without applying investment returns.
-Employer contributions and withdrawals are outside the current implementation.
+Employer contributions remain outside the current implementation. Lifecycle
+withdrawals and investment cash flows are described in [methodology.md](methodology.md).
 
 ## Tax interface
 
@@ -45,10 +46,10 @@ Contributions are nonnegative. Taxable basis may exceed market value after losse
 Money uses floating-point dollars for future numerical simulation; tests compare
 with tolerances, and reports round only for display.
 
-The current example uses nominal 2026 dollars; the future annual simulation will
-convert nominal policy inputs and report real outcomes explicitly. Ages, spending,
-filing status, states, seed, and scenario count are validated configuration inputs
-but do not affect this single-year accounting demonstration.
+The one-year example uses nominal 2026 dollars. The lifecycle simulation tracks
+nominal policy inputs and price indices, and exports both nominal and real
+results. Ages, spending, states, seed, and scenario count drive the lifecycle
+engine; the original one-year accounting demonstration remains available.
 
 ## Validation
 

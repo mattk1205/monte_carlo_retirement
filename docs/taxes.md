@@ -60,13 +60,13 @@ rounding or select an inflation rate.
 
 `configs/scenarios/higher_taxes.yaml` adds `hypothetical_2036.yaml`: federal rates
 rise by five percentage points in 2036; state rules and nominal dollar thresholds
-remain unchanged. Switching is tested at the effective-year boundary. Scenario
-probabilities and random policy transitions belong to the Monte Carlo phase.
+remain unchanged. Switching is tested at the effective-year boundary. The lifecycle engine additionally supports a shared hypothetical rate multiplier;
+see [methodology.md](methodology.md) for its distribution and observability.
 
 ## Deliberate boundaries
 
 This is an ordinary-income comparison engine, not a full return preparer. It
-excludes credits, AMT, payroll taxes, capital-gains schedules, qualified dividends,
+excludes credits, AMT, payroll taxes, actual capital-gains schedules,
 Social Security inclusion formulas, local taxes, state/federal itemization links,
 SALT limits, and deduction phaseouts. Callers may supply already-taxable ordinary
 income, but must not pass gross Social Security benefits as ordinary income.
@@ -83,3 +83,14 @@ The $24,000 employee contribution limit in household configuration is still a
 synthetic assumption. Tax snapshots do not enforce contribution eligibility,
 catch-up rules, or employer matching. Amounts are floating-point dollars without
 tax-return rounding; tests use numerical tolerances.
+
+
+## Lifecycle tax extension
+
+The vectorized `TaxKernel` implements the same ordinary-income schedule rules
+and is tested against the scalar engine. It adds a configured flat federal gains
+rate and ordinary state tax for realized gains and reinvested dividends. This is
+an explicitly simplified assumption, not a statutory capital-gains schedule.
+Losses reduce asset value but do not generate refunds or loss carryovers. Current
+rate multipliers and explicitly configured indexing apply in both planning and
+evaluation. See [methodology.md](methodology.md) for RMDs and valuation rules.

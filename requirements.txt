@@ -1,0 +1,13 @@
+# Numerical arrays and reproducible random sampling.
+numpy
+# Result tables and CSV exports.
+pandas
+# Numerical solvers and statistical analysis.
+scipy
+# YAML simulation configuration.
+PyYAML
+# Charts and report figures.
+matplotlib
+# Tensor calculations and NVIDIA CUDA user-space libraries.
+# A compatible host NVIDIA driver is also required for GPU access.
+tensorflow[and-cuda]

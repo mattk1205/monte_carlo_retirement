@@ -1,0 +1,74 @@
+policy_id: hypothetical_higher_federal_2036
+effective_year: 2036
+description: 'HYPOTHETICAL: federal rates rise by 5 percentage points in 2036; nominal
+  thresholds and deductions frozen at 2026 levels. Not enacted law or a forecast.'
+sources:
+- Hypothetical scenario derived from us_2026_ordinary_income_v1; not statutory policy.
+federal:
+  retirement_taxable_fraction: 1
+  filing_statuses:
+    single:
+      deduction: 16100
+      brackets:
+      - lower: 0
+        rate: 0.15
+      - lower: 12400
+        rate: 0.17
+      - lower: 50400
+        rate: 0.27
+      - lower: 105700
+        rate: 0.29
+      - lower: 201775
+        rate: 0.37
+      - lower: 256225
+        rate: 0.4
+      - lower: 640600
+        rate: 0.42
+    married_filing_jointly:
+      deduction: 32200
+      brackets:
+      - lower: 0
+        rate: 0.15
+      - lower: 24800
+        rate: 0.17
+      - lower: 100800
+        rate: 0.27
+      - lower: 211400
+        rate: 0.29
+      - lower: 403550
+        rate: 0.37
+      - lower: 512450
+        rate: 0.4
+      - lower: 768700
+        rate: 0.42
+states:
+  TX:
+    retirement_taxable_fraction: 1
+    filing_statuses:
+      single:
+        deduction: 0
+        brackets:
+        - lower: 0
+          rate: 0
+      married_filing_jointly:
+        deduction: 0
+        brackets:
+        - lower: 0
+          rate: 0
+  SYNTHETIC_STATE:
+    retirement_taxable_fraction: 0
+    filing_statuses:
+      single:
+        deduction: 5000
+        brackets:
+        - lower: 0
+          rate: 0.03
+        - lower: 50000
+          rate: 0.05
+      married_filing_jointly:
+        deduction: 10000
+        brackets:
+        - lower: 0
+          rate: 0.03
+        - lower: 100000
+          rate: 0.05

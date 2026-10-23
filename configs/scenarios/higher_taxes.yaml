@@ -1,0 +1,25 @@
+# Hypothetical federal increase effective in 2036.
+current_age: 35
+retirement_age: 65
+planning_end_age: 95
+filing_status: single
+working_state: TX
+retirement_state: TX
+annual_income: 100000
+annual_after_tax_savings_budget: 15000
+annual_retirement_spending: 60000
+traditional_balance: 100000
+roth_balance: 25000
+taxable_balance: 10000
+taxable_basis: 8000
+employee_contribution_limit: 24000
+tax_year: 2026
+tax_policy_files:
+- ../../data/tax_policy/us_2026.yaml
+- ../../data/tax_policy/hypothetical_2036.yaml
+roth_shares:
+- 0.0
+- 0.5
+- 1.0
+random_seed: 42
+scenario_count: 10000
